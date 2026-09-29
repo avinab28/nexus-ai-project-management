@@ -97,8 +97,10 @@ router.put('/members/:userId/role', authenticate, requirePermission('settings.ma
     const { role } = req.body;
     const workspaceId = req.user?.workspaceId;
 
-    if (!['OWNER', 'PROJECT_MANAGER', 'EDITOR', 'VIEWER'].includes(role)) {
-      return res.status(400).json({ success: false, message: 'Invalid role' });
+    const normalizedRole = (role || '').toUpperCase().trim();
+    const customRoleExists = await prisma.customRole.findFirst({ where: { key: normalizedRole } });
+    if (!['OWNER', 'PROJECT_MANAGER', 'EDITOR', 'VIEWER'].includes(normalizedRole) && !customRoleExists) {
+      return res.status(400).json({ success: false, message: `Invalid or unrecognized role: '${role}'. Please create the role first.` });
     }
 
     const membership = await prisma.membership.findFirst({

@@ -1,4 +1,14 @@
-export type RoleType = 'OWNER' | 'PROJECT_MANAGER' | 'EDITOR' | 'VIEWER';
+export type RoleType = 'OWNER' | 'PROJECT_MANAGER' | 'EDITOR' | 'VIEWER' | string;
+
+export interface RoleDefinition {
+  id?: string;
+  key: string;
+  name: string;
+  description: string;
+  color: string;
+  permissions: PermissionName[];
+  isSystem?: boolean;
+}
 
 export type PriorityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 

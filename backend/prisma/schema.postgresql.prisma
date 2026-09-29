@@ -483,3 +483,17 @@ model AIPlan {
   @@index([workspaceId])
   @@index([projectId])
 }
+
+model CustomRole {
+  id          String    @id @default(uuid())
+  workspaceId String?
+  name        String
+  key         String    @unique
+  description String?
+  color       String    @default("#06b6d4")
+  permissions String    @default("[]") // JSON array of string permissions
+  isSystem    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+

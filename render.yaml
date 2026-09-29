@@ -1,0 +1,31 @@
+services:
+  # Express REST API Backend
+  - type: web
+    name: nexus-backend
+    env: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+
+# Free Managed PostgreSQL Database
+databases:
+  - name: nexus-db
+    plan: free
+    region: oregon
+    databaseName: nexus_db
+    user: nexus_user

@@ -19,15 +19,22 @@ export const TeamPage: React.FC = () => {
   const { canManageMembers } = usePermissions();
 
   const [members, setMembers] = useState<any[]>([]);
+  const [availableRoles, setAvailableRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const loadMembers = async () => {
     try {
       setLoading(true);
-      const res = await api.getMembers();
-      if (res.success) {
-        setMembers(res.members || []);
+      const [membersRes, rolesRes] = await Promise.all([
+        api.getMembers(),
+        api.getRoles().catch(() => ({ success: false, roles: [] }))
+      ]);
+      if (membersRes.success) {
+        setMembers(membersRes.members || []);
+      }
+      if (rolesRes.success && rolesRes.roles) {
+        setAvailableRoles(rolesRes.roles);
       }
     } catch (err) {
       console.error(err);
@@ -166,10 +173,20 @@ export const TeamPage: React.FC = () => {
                     onChange={e => handleRoleChange(m.id, e.target.value)}
                     className="bg-slate-900 border border-white/10 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-indigo-500 font-semibold"
                   >
-                    <option value="OWNER">Owner</option>
-                    <option value="PROJECT_MANAGER">Project Manager</option>
-                    <option value="EDITOR">Editor</option>
-                    <option value="VIEWER">Viewer</option>
+                    {availableRoles.length > 0 ? (
+                      availableRoles.map(r => (
+                        <option key={r.key} value={r.key}>
+                          {r.name || r.key}
+                        </option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="OWNER">Owner</option>
+                        <option value="PROJECT_MANAGER">Project Manager</option>
+                        <option value="EDITOR">Editor</option>
+                        <option value="VIEWER">Viewer</option>
+                      </>
+                    )}
                   </select>
                 ) : (
                   <span className="font-bold text-indigo-400 uppercase text-[11px]">{m.role}</span>

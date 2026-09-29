@@ -18,7 +18,8 @@
 - 🎯 **Focus & Pomodoro Mode**: Distraction-free execution interface with integrated 25-minute Pomodoro timer, ambient sounds, and active task spotlight.
 - 📊 **Executive Analytics & Velocity Reports**: Recharts-powered sprint velocity, cumulative burndown curves, workload distribution, and task cycle times.
 - 🔐 **Granular Role-Based Access Control (RBAC)**: 15 discrete capability scopes across 4 personas (`OWNER`, `PROJECT_MANAGER`, `EDITOR`, `VIEWER`) enforced at both the API gateway and UI levels.
-- ⚡ **1-Click Demo Persona Switcher**: Instant switching between Owner, PM, Developer, and Stakeholder personas directly on the login screen or via the navbar dropdown.
+- 🛡️ **Dynamic Custom Role Builder**: Create ANY custom role (QA Engineer, DevOps, Security Auditor, etc.) with custom color badges and granular capability scopes. Custom roles automatically populate into the interactive RBAC matrix and team assignment dropdowns.
+- 🚀 **100% Free GitHub & Cloud Deployment**: Pre-configured GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) for instant zero-cost GitHub Pages hosting, plus 1-click Render blueprint (`render.yaml`) for managed PostgreSQL and Node.js backend.
 - ⌨️ **Global Command Palette (`CTRL + K`)**: Keyboard-first navigation, instant project search, and direct action triggers.
 - 🌐 **Three.js 3D Visualizations**: Geometric particle network hero header and interactive 3D pulsing AI orb.
 

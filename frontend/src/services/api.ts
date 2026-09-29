@@ -45,7 +45,7 @@ export const api = {
   register: (payload: { name: string; email: string; password: string; workspaceName?: string }) =>
     request('/auth/register', { method: 'POST', body: JSON.stringify(payload) }),
 
-  demoLogin: (role: 'OWNER' | 'PROJECT_MANAGER' | 'EDITOR' | 'VIEWER') =>
+  demoLogin: (role: 'OWNER' | 'PROJECT_MANAGER' | 'EDITOR' | 'VIEWER' | string) =>
     request('/auth/demo-login', { method: 'POST', body: JSON.stringify({ role }) }),
 
   getMe: () => request('/auth/me'),
@@ -169,6 +169,17 @@ export const api = {
     request(`/workspaces/members/${userId}/role`, { method: 'PUT', body: JSON.stringify({ role }) }),
 
   getPermissionsMatrix: () => request('/permissions/matrix'),
+
+  getRoles: () => request('/permissions/roles'),
+
+  createRole: (data: { name: string; key?: string; description?: string; color?: string; permissions: string[] }) =>
+    request('/permissions/roles', { method: 'POST', body: JSON.stringify(data) }),
+
+  updateRole: (key: string, data: any) =>
+    request(`/permissions/roles/${key}`, { method: 'PUT', body: JSON.stringify(data) }),
+
+  deleteRole: (key: string) =>
+    request(`/permissions/roles/${key}`, { method: 'DELETE' }),
 
   // Global Search
   search: (q: string) => request(`/search?q=${encodeURIComponent(q)}`),

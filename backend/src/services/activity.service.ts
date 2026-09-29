@@ -6,13 +6,17 @@ export interface LogActivityParams {
   taskId?: string;
   userId: string;
   action: string;
-  entityType: 'TASK' | 'PROJECT' | 'COMMENT' | 'AI_PLAN' | 'MEMBER' | 'MILESTONE';
+  entityType: 'TASK' | 'PROJECT' | 'COMMENT' | 'AI_PLAN' | 'MEMBER' | 'MILESTONE' | 'ROLE' | string;
   entityId: string;
-  details: string;
+  details: string | Record<string, any>;
 }
 
 export async function logActivity(params: LogActivityParams) {
   try {
+    const detailsStr = typeof params.details === 'object' 
+      ? JSON.stringify(params.details) 
+      : String(params.details);
+
     return await prisma.activityLog.create({
       data: {
         workspaceId: params.workspaceId,
@@ -22,7 +26,7 @@ export async function logActivity(params: LogActivityParams) {
         action: params.action,
         entityType: params.entityType,
         entityId: params.entityId,
-        details: params.details
+        details: detailsStr
       }
     });
   } catch (err) {
