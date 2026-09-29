@@ -163,8 +163,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 // Initialize DB and Start Server
 async function startServer() {
   await connectDB();
-  app.listen(ENV.PORT, () => {
-    console.log(`🚀 NEXUS API Server is running on http://localhost:${ENV.PORT}`);
+  app.listen(ENV.PORT, '0.0.0.0', () => {
+    console.log(`🚀 NEXUS API Server is running on http://0.0.0.0:${ENV.PORT}`);
     console.log(`📡 Environment: ${ENV.NODE_ENV}`);
   });
 }

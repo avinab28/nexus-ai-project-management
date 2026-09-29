@@ -14,12 +14,6 @@ datasource db {
 // ENUMS
 // -----------------------------------------------------------------------------
 
-enum RoleType {
-  OWNER
-  PROJECT_MANAGER
-  EDITOR
-  VIEWER
-}
 
 enum ProjectStatus {
   PLANNING
@@ -84,7 +78,7 @@ model User {
   bio           String?
   title         String?        @default("Team Member")
   department    String?        @default("Engineering")
-  role          RoleType       @default(EDITOR)
+  role          String         @default("EDITOR")
   isActive      Boolean        @default(true)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -144,7 +138,7 @@ model Membership {
   id          String     @id @default(uuid())
   userId      String
   workspaceId String
-  role        RoleType   @default(EDITOR)
+  role        String     @default("EDITOR")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
