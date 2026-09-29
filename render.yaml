@@ -1,12 +1,11 @@
 services:
-  # Express REST API Backend
+  # Full-Stack Web Platform (React Frontend + Express API + Static Serving)
   - type: web
-    name: nexus-backend
+    name: nexus-platform
     env: node
     plan: free
     region: oregon
-    rootDir: backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm run install:all && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV

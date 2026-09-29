@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
+import fs from 'fs';
 import { ENV } from './config/env.js';
 import { connectDB, prisma } from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
@@ -120,6 +122,25 @@ app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/permissions', permissionRoutes);
+
+const frontendDist = fs.existsSync(path.resolve(process.cwd(), 'frontend/dist'))
+  ? path.resolve(process.cwd(), 'frontend/dist')
+  : path.resolve(process.cwd(), '../frontend/dist');
+
+// Serve static frontend assets if built
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    if (req.url.startsWith('/api') || req.url.startsWith('/health')) {
+      return next();
+    }
+    const indexHtml = path.join(frontendDist, 'index.html');
+    if (fs.existsSync(indexHtml)) {
+      return res.sendFile(indexHtml);
+    }
+    next();
+  });
+}
 
 // 404 Route Handler
 app.use((req: Request, res: Response) => {
